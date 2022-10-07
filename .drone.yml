@@ -1,0 +1,54 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  # - name: build docker image
+  #   image: plugins/docker
+  #   settings:
+  #     username:
+  #       from_secret: docker_username_alicloud
+  #     password:
+  #       from_secret: docker_password_alicloud
+  #     repo: registry.cn-hongkong.aliyuncs.com/fotsg/${DRONE_REPO_NAME,,}
+  #     registry: registry.cn-hongkong.aliyuncs.com
+  #     tags: latest
+  #     debug: false
+  #     insecure: false
+  - name: build Base Node builder image
+    image: plugins/docker
+    settings:
+      username:
+        from_secret: docker_username_dockerhub
+      password:
+        from_secret: docker_password_dockerhub
+      repo: teedywang/base_node_builder
+      # registry: registry.cn-hongkong.aliyuncs.com
+      tags: latest
+      debug: false
+      insecure: false
+
+---
+kind: secret
+name: docker_username_dockerhub
+get:
+  path: cicd/infra
+  name: docker_username_dockerhub
+---
+kind: secret
+name: docker_password_dockerhub
+get:
+  path: cicd/infra
+  name: docker_password_dockerhub
+---
+kind: secret
+name: docker_username_alicloud
+get:
+  path: cicd/infra
+  name: docker_username_alicloud
+---
+kind: secret
+name: docker_password_alicloud
+get:
+  path: cicd/infra
+  name: docker_password_alicloud

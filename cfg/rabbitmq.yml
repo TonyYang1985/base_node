@@ -1,0 +1,1 @@
+connection: amqp://admin:admin@amqp.dev.fot.cool/fot

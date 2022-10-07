@@ -1,0 +1,11 @@
+// { }
+import { Service } from 'typedi';
+import { {{toEntityName tscName}} } from '../entities';
+import { EntityRepository, Repository } from 'typeorm';
+
+
+@Service()
+@EntityRepository({{toEntityName tscName}})
+export class {{toEntityName tscName}}Repo extends Repository<{{toEntityName tscName}}> {
+     // Add your code herer
+}

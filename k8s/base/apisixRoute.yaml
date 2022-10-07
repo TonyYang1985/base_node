@@ -1,0 +1,44 @@
+apiVersion: apisix.apache.org/v2alpha1
+kind: ApisixRoute
+metadata:
+  name: APP_NAME
+  labels:
+    app.kubernetes.io/name: APP_NAME
+spec:
+  http:
+  - name: APP_NAME
+    match:
+      hosts:
+      - CHANGE_IT_YOURSELF.sg.fot.cool
+      - CHANGE_IT_YOURSELF.cn.fot.cool
+      paths:
+      - /api/v1/APP_NAME/*
+    backend:
+      serviceName: APP_NAME
+      servicePort: 3000
+      resolveGranularity: service
+    websocket: true
+    plugins:
+    - name: fot-usercenter-auth
+      enable: true
+      config:
+        usercenter_host: usercenter.NAME_SPACE
+        publickey: |-
+          -----BEGIN PUBLIC KEY-----
+          MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAufi0t5GlUM27ITsri8js
+          CXY2sUup58HaUnx9XxiA/j2xJex+WWgQzdnCY0H45AMXChfOvKItAVBhPLSD8y1w
+          X3/TRkPog7sk6ARfSjj4G85Z6571qnvYoo99rbPhnwc7219wAR2SpUIH25/fAkh+
+          L4XLtOwsbfkW8X6d/NZ57/yal3s4nORsd1FxSiNSyB78Sd3DSjVs0fQf9r4Owq0Y
+          19GymRvbLMGy34ZEbpoqvJMrspt12/0eF8LuFpagF6x/KwvHnSDPhthR/aIxILuY
+          Z6D9mT4FY9qlvjhJxb+l9vR2gqZyukW7Y1YN4klQzfmwzsSbR6m7yHZ/K1348M8R
+          WwIDAQAB
+          -----END PUBLIC KEY-----
+    - name: limit-count
+      enable: true
+      config:
+        count: 200
+        time_window: 10
+        rejected_code: 503
+        key: remote_addr
+    - name: cors
+      enable: true

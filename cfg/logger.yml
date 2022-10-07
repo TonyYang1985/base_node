@@ -1,0 +1,5 @@
+level: debug
+prettyPrint:
+  translateTime: SYS:standard
+  ignore: pid,hostname
+  levelFirst: true

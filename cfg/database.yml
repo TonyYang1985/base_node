@@ -1,0 +1,3 @@
+mariaDBUrl: mysql://fot:fot@db.sg.fot.cool:3306/fot_database
+redis: "redis://db.sg.fot.cool:6379/10"
+output: ./example

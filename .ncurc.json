@@ -1,0 +1,8 @@
+{
+    "upgrade": true,
+    "reject": [
+        "internal-ip",
+        "pino",
+        "pino-pretty"
+    ]
+}

@@ -1,6 +1,3 @@
-# basenode
-
-
 # README #
 
 ## Please follow the step by step to startup your fotapi project.

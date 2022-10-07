@@ -1,0 +1,2 @@
+mariaDBUrl: 'mysql://condo_dev:condo_dev@db.sg.fot.cool:3306/condo_dev'
+redis: 'redis://redis.sg.fot.cool:6379/1'

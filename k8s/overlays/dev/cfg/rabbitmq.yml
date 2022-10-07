@@ -1,0 +1,1 @@
+connection: amqp://condo_dev:condo_dev@mq.sg.fot.cool/condo_dev

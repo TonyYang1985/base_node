@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "outDir": "temp",
+    "target": "es2015",
+    "module": "CommonJS",
+    "strict": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
+    "declaration": true,
+    "skipLibCheck": true,
+    "lib": [
+      "es5",
+      "esnext.asynciterable",
+      "esnext.bigint"
+    ],
+    "sourceMap": true,
+    "removeComments": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "baseUrl": "."
+  },
+  "exclude": [
+    "node_modules",
+    "temp",
+    "dist"
+  ]
+}

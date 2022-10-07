@@ -1,0 +1,27 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: NAME_SPACE
+
+resources:
+- ../../base
+patches:
+- target:
+    kind: ApisixRoute
+    name: APP_NAME
+  path: apiRoutePatch.yaml
+
+secretGenerator:
+  - name: jwt-keys
+    files: 
+    - privateKey.pem=keys/privateKey.pem
+    - publicKey.pem=keys/publicKey.pem
+  - name: app-secrets
+    files: 
+    - database.yml=cfg/database.yml
+    - rabbitmq.yml=cfg/rabbitmq.yml
+generatorOptions:
+  disableNameSuffixHash: true
+
+images:
+- name: registry.cn-hongkong.aliyuncs.com/fotsg/user_center_api
+  newTag: latest

@@ -53,13 +53,13 @@ jobs:
           # push image to docker hub
           push: ${{ github.event_name != 'pull_request' }}
           # Add multiple Tags
-          # latest version: yxj1985/base_node:latest
-          # package version: yxj1985/base_node:v${{ steps.package-version.outputs.current-version}}
-          # timestampe version: yxj1985/base_node:${{ steps.date.outputs.date }}
+          # latest version: yxj1985/${{ github.event.repository.name }}:latest
+          # package version: yxj1985/${{ github.event.repository.name }}:v${{ steps.package-version.outputs.current-version}}
+          # timestampe version: yxj1985/${{ github.event.repository.name }}:${{ steps.date.outputs.date }}
           tags: |
-            yxj1985/base_node:latest
-            yxj1985/base_node:v${{ steps.package-version.outputs.current-version}}
-            yxj1985/base_node:v${{ steps.date.outputs.date }}
+            yxj1985/${{ github.event.repository.name }}:latest
+            yxj1985/${{ github.event.repository.name }}:v${{ steps.package-version.outputs.current-version}}
+            yxj1985/${{ github.event.repository.name }}:v${{ steps.date.outputs.date }}
 
           # docker/metadata-action@v4 meta (tags labels) from Git reference and GitHub events
           # tags: ${{ steps.meta.outputs.tags }}

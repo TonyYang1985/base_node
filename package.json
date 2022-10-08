@@ -1,6 +1,6 @@
 {
   "name": "@gaias/basenode",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "buildNumber": 200927556,
   "description": "API development framework for NodeJs",
   "author": "FOT",

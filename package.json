@@ -78,7 +78,7 @@
     "@types/node": "^16.11.6",
     "@types/pino": "^6.3.12",
     "@types/rascal": "^10.0.4",
-    "amqplib": "^0.8.0",
+    "amqplib": "^0.10.3",
     "build-number-generator": "^1.0.0",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",

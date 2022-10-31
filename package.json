@@ -1,6 +1,6 @@
 {
   "name": "@gaias/basenode",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "buildNumber": 200927556,
   "description": "API development framework for NodeJs",
   "author": "FOT",
@@ -22,6 +22,7 @@
     "gen:db": "cross-env NODE_ENV=development yarn gen:db-schema && yarn gen:db-repo && yarn gen:idx && eslint '*/**/*.ts' --quiet --fix",
     "gen:keys": "openssl genrsa -out ./keys/privateKey.pem 2048 && openssl rsa -in ./keys/privateKey.pem -outform PEM -pubout -out ./keys/publicKey.pem",
     "lint": "tsc --noEmit && eslint '*/**/*.ts' --quiet --fix",
+    "precommit": "yarn lint",
     "prepublish": "yarn gen:idx && rimraf dist && mkdir dist && tsc && mv temp/src/* dist/ && rimraf temp",
     "prepare": "husky install"
   },
@@ -80,7 +81,7 @@
     "@types/rascal": "^10.0.4",
     "amqplib": "^0.8.0",
     "build-number-generator": "^1.0.0",
-    "class-transformer": "^0.4.0",
+    "class-transformer": "^0.5.0",
     "class-validator": "^0.13.1",
     "class-validator-jsonschema": "^3.1.0",
     "cls-hooked": "^4.2.2",
@@ -105,7 +106,7 @@
     "mergejson": "^1.1.2",
     "microframework": "^0.6.4",
     "module-alias": "^2.2.2",
-    "multer": "^1.4.3",
+    "multer": "^1.4.4-lts.1",
     "mysql2": "^2.3.2",
     "nanoid": "^3.1.30",
     "npe": "^1.1.4",

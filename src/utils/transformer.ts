@@ -1,15 +1,14 @@
-import { plainToInstance } from 'class-transformer';
+import { plainToClass } from 'class-transformer';
 import { ClassType } from '../libs/types';
 
 export function trans<T>(claz: ClassType<T>, obj?: any, groups: string[] = []): T {
-  // const inst = new claz();
-  // Object.assign(inst, obj);
-  return plainToInstance(claz, obj, { excludeExtraneousValues: true, groups });
+  return plainToClass(claz, obj, { excludeExtraneousValues: true, groups });
 }
 
 export function transArray<T>(claz: ClassType<T>, objArray: any[], groups: string[] = []): T[] {
   if (Array.isArray(objArray)) {
-    return plainToInstance(claz, objArray, { excludeExtraneousValues: true, groups });
+    // return objArray.map((obj) => trans(claz, obj, groups));
+    return plainToClass(claz, objArray, { excludeExtraneousValues: true, groups });
   } else {
     throw new Error('"transArray" accepts array only!');
   }

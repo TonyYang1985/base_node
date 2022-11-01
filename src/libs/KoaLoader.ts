@@ -63,7 +63,7 @@ export const koaLoader = (option: KoaLoaderOption) => (options?: MicroframeworkS
   const svcPath = `/api/v${cfg.version}/${cfg.appName}`;
   const useKoaServerOption: RoutingControllersOptions = {
     routePrefix: svcPath,
-    classTransformer: true,
+    classTransformer: false,
     defaults: {
       nullResultCode: 404,
       undefinedResultCode: 204,

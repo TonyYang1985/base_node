@@ -2,6 +2,8 @@ import { plainToClass } from 'class-transformer';
 import { ClassType } from '../libs/types';
 
 export function trans<T>(claz: ClassType<T>, obj?: any, groups: string[] = []): T {
+  // const inst = new claz();
+  // Object.assign(inst, obj);
   return plainToClass(claz, obj, { excludeExtraneousValues: true, groups });
 }
 

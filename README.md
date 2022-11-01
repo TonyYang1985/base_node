@@ -45,3 +45,8 @@ https://github.com/typestack/socket-controllers/blob/master/README.md[socket-con
 ** https://typeorm.io/[typeorm] 
 ** https://github.com/odavid/typeorm-transactional-cls-hooked/blob/master/README.md[tx decorators]
 ** https://github.com/typeorm/typeorm-typedi-extensions/blob/master/README.md[inject repo/conn]
+
+
+
+## Dev
+http://localhost:3000/api/v1/example/query/roles

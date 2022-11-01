@@ -25,6 +25,8 @@ export * from './RedisLoader';
 export * from './ResRegTypes';
 export * from './Timer';
 export * from './TypeormLoader';
+export * from './UniversalController';
+export * from './UniversalService';
 export * from './ValidationHelper';
 export * from './i18nValidator';
 export * from './types';

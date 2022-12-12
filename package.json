@@ -83,7 +83,7 @@
     "amqplib": "^0.8.0",
     "build-number-generator": "^1.0.0",
     "class-transformer": "0.3.1",
-    "class-validator": "0.12.2",
+    "class-validator": "0.14.0",
     "class-validator-jsonschema": "^3.1.0",
     "cls-hooked": "^4.2.2",
     "eventemitter3": "^4.0.7",

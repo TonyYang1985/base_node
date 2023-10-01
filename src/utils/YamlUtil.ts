@@ -3,7 +3,7 @@ import glob from 'glob-promise';
 import yaml from 'js-yaml';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const mergejson = require('mergejson');
+const mergejson = require('merge-json');
 const configFiles: string[] = [];
 
 const find = (path: string) => {

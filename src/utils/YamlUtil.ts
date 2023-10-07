@@ -3,7 +3,7 @@ import glob from 'glob-promise';
 import yaml from 'js-yaml';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const mergejson = require('merge-json');
+const mergeJSON = require('merge-json');
 const configFiles: string[] = [];
 
 const find = (path: string) => {
@@ -33,7 +33,7 @@ export const loadConfig = (name: string): any => {
   const file = find(configFile);
   if (file) {
     const config = yaml.load(fs.readFileSync(file, 'utf8'));
-    cfg = mergejson(cfg, config);
+    cfg = mergeJSON.merge(cfg, config);
   }
 
   return cfg;

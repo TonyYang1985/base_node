@@ -77,7 +77,7 @@
     "@types/koa__multer": "^2.0.4",
     "@types/lodash": "^4.14.176",
     "@types/node": "^16.11.6",
-    "@types/pino": "^6.3.12",
+    "@types/pino": "^7.0.0",
     "@types/pino-std-serializers": "^4.0.0",
     "@types/rascal": "^10.0.4",
     "amqplib": "^0.8.0",

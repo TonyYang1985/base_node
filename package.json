@@ -108,7 +108,7 @@
     "microframework": "^0.6.4",
     "module-alias": "^2.2.2",
     "multer": "^1.4.3",
-    "mysql2": "^2.3.2",
+    "mysql2": "^3.9.8",
     "nanoid": "^3.1.30",
     "npe": "^1.1.4",
     "pagination-calculator": "^1.0.0",

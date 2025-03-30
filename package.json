@@ -67,7 +67,7 @@
   },
   "dependencies": {
     "@koa/cors": "3",
-    "@koa/multer": "^3.0.0",
+    "@koa/multer": "^3.1.0",
     "@types/amqplib": "^0.8.2",
     "@types/ioredis": "^4.28.0",
     "@types/js-yaml": "^4.0.4",

@@ -95,7 +95,7 @@
     "js-yaml": "^4.1.0",
     "jsonata": "^1.8.5",
     "jsonwebtoken": "^8.5.1",
-    "koa": "^2.13.4",
+    "koa": "^2.16.2",
     "koa-bodyparser": "^4.3.0",
     "koa-compress": "^5.1.0",
     "koa-favicon": "^2.1.0",

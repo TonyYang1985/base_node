@@ -7,7 +7,7 @@ WORKDIR /fot.sg/build
 ENV YARN_CACHE_FOLDER=/.yarn/cache
 COPY package.json .
 #RUN yarn install --ignore-scripts
-RUN yarn install --frozen-lockfile
+#RUN yarn install --frozen-lockfile
 
 FROM node:20-alpine 
 

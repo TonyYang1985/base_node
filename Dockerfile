@@ -27,7 +27,7 @@ ENV YARN_CACHE_FOLDER=/.yarn/cache
 COPY package.json .
 COPY . .
 RUN yarn install --frozen-lockfile
-RUN yarn buildNum && yarn ncc:build
+# RUN yarn buildNum && yarn ncc:build
 RUN rm -rfv ./cfg/*.development.yaml
 
 FROM node:20-alpine

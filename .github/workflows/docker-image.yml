@@ -12,10 +12,10 @@ jobs:
     steps:
       - name: Project CICD Start
         id: date
-        run: echo "::set-output name=date::$(TZ=Asia/Singapore date +'%Y%m%d%H%M%S')"
+        run:  echo "date=$(TZ=Asia/Singapore date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
 
-      - name: Clone Github Repository
-        uses: actions/checkout@v3
+      - name: Clone Github Repository 
+        uses: actions/checkout@v4
 
       - name: Current Version From Package.json
         id: package-version

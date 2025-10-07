@@ -1,13 +1,13 @@
-import * as Pino from 'pino';
+import pino from 'pino';
 import { ConfigManager } from './ConfigManager';
 
 export interface LoggerConfig {
-  level: Pino.Level;
-  prettyPrint: any;
+  level: pino.Level;
+  prettyPrint?: boolean; // ✅ 改为 boolean
 }
 
 export class Logger {
-  static getLogger<T>(owner: (new (...args: any[]) => T) | string): Pino.Logger {
+  static getLogger<T>(owner: (new (...args: any[]) => T) | string): pino.Logger {
     let tag = 'Logger';
     if (typeof owner === 'string') {
       tag = owner;
@@ -15,11 +15,23 @@ export class Logger {
       tag = owner.name;
     }
     const loggerCfg = ConfigManager.getConfig<LoggerConfig>('logger');
-    const logger = Pino.default({
+
+    // ✅ 新的 Pino 配置方式
+    const logger = pino({
       name: tag,
       level: loggerCfg.level,
-      prettyPrint: loggerCfg.prettyPrint,
+      transport: loggerCfg.prettyPrint
+        ? {
+            target: 'pino-pretty',
+            options: {
+              colorize: true,
+              translateTime: 'HH:MM:ss Z',
+              ignore: 'pid,hostname',
+            },
+          }
+        : undefined,
     });
+
     return logger;
   }
 }

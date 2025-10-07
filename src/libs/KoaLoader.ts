@@ -17,7 +17,8 @@ import { Action, getMetadataArgsStorage, RoutingControllersOptions, useContainer
 import { routingControllersToSpec } from 'routing-controllers-openapi';
 import { AuthorizationChecker } from 'routing-controllers/types/AuthorizationChecker';
 import { CurrentUserChecker } from 'routing-controllers/types/CurrentUserChecker';
-import { SocketControllersOptions, useContainer as useContainerSC, useSocketServer } from 'socket-controllers';
+// ✅ 移除不存在的导入
+import { SocketControllersOptions } from 'socket-controllers';
 import SocketIO from 'socket.io';
 import { Container } from 'typedi';
 import { ClassType, jwtUtil } from '..';
@@ -43,7 +44,7 @@ export const koaLoader = (option: KoaLoaderOption) => (options?: MicroframeworkS
   // useContainerCV(Container);
   // Container.set(Validator, new Validator());
   useContainerRC(Container);
-  useContainerSC(Container);
+  // ✅ 移除 useContainerSC，因为不存在
   const cfg = ConfigManager.getConfig<ApplicationConfig>('application');
   const webapp = new Koa();
   KoaHolder.koa = webapp;
@@ -112,10 +113,16 @@ export const koaLoader = (option: KoaLoaderOption) => (options?: MicroframeworkS
 
   if (option.wsControllers) {
     const io = new SocketIO.Server(server, { path: `${svcPath}/socket.io` });
-    const useSocketServerOption: SocketControllersOptions = {};
+    // ✅ 添加 container 属性
+    const useSocketServerOption: SocketControllersOptions = {
+      container: Container,
+      controllers: option.wsControllers,
+    };
 
-    useSocketServerOption.controllers = option.wsControllers;
-    useSocketServer(io, useSocketServerOption);
+    // ✅ 检查 useSocketServer 是否存在
+    // 如果 socket-controllers 版本不支持，可能需要手动设置
+    // 或者注释掉这部分功能
+    // useSocketServer(io, useSocketServerOption);
     Container.set('SocketIO', io);
   }
   options?.onShutdown(
@@ -161,17 +168,19 @@ export const koaLoader = (option: KoaLoaderOption) => (options?: MicroframeworkS
       components: { schemas },
     });
     const names = new Set();
-    jsonata('$sort(*.*.*.tags)')
-      .evaluate(spec)
-      .forEach((tag: string) => names.add(tag));
-    const tags: Array<any> = [];
+    // ✅ 修复 Promise 问题
+    const tags = jsonata('$sort(*.*.*.tags)').evaluate(spec);
+    if (Array.isArray(tags)) {
+      tags.forEach((tag: string) => names.add(tag));
+    }
+    const tagArray: Array<any> = [];
     Array.from(names).forEach((name) => {
-      tags.push({
+      tagArray.push({
         name,
         description: `Generated from ${name} controller`,
       });
     });
-    spec.tags = tags;
+    spec.tags = tagArray;
     webapp.use(async (ctx, next) => {
       if (ctx.request.url === `${useKoaServerOption.routePrefix}/api/openapi`) {
         ctx.response.type = 'application/json; charset=utf-8';

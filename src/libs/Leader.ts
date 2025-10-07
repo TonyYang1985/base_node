@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import EventEmitter from 'eventemitter3';
-import IORedis from 'ioredis';
+import { Redis } from 'ioredis';
 import { Service } from 'typedi';
 import { ApplicationConfig } from './ApplicationConfig';
 import { ConfigManager } from './ConfigManager';
@@ -54,7 +54,7 @@ export class Leader extends EventEmitter {
 
   readonly id = id(16);
 
-  readonly redis: IORedis.Redis;
+  readonly redis: Redis;
 
   key: string;
 

@@ -18,6 +18,7 @@ export class EmployeesWSController {
   @OnDisconnect()
   disconnect(@ConnectedSocket() socket: SocketIO.Socket) {
     console.log('client disconnected');
+    console.log('client connected', socket.id);
   }
 
   // @OnMessage('load')

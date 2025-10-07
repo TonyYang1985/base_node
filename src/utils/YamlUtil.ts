@@ -1,38 +1,45 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-var-requires */
 import fs from 'fs';
 import glob from 'glob-promise';
 import yaml from 'js-yaml';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const mergeJSON = require('merge-json');
+
 const configFiles: string[] = [];
 
-const find = (path: string) => {
-  return configFiles.find((f) => f === `${path}.yml`);
-};
+const find = (path: string): string | undefined => configFiles.find((f) => f === `${path}.yml`);
 
-export const loadConfig = (name: string): any => {
+export interface Config extends Record<string, any> {
+  [key: string]: any;
+}
+
+export const loadConfig = (name: string): Config => {
   if (configFiles.length === 0) {
-    glob.sync('./cfg/*.yml').forEach((f) => configFiles.push(f));
+    glob.sync('./cfg/*.yml').forEach((f: string) => configFiles.push(f));
   }
   const environment = process.env.NODE_ENV;
   const zone = process.env.DEV_ZONE;
   const envConfigFile = `./cfg/${name}.${environment}`;
   const zoneConfigFile = `./cfg/${name}.${zone}`;
   const configFile = `./cfg/${name}`;
-  let cfg = {};
+  let cfg: Config = {};
+
   const envFile = find(envConfigFile);
   if (envFile) {
-    const envConfig = yaml.load(fs.readFileSync(envFile, 'utf8'));
+    const envConfig = yaml.load(fs.readFileSync(envFile, 'utf8')) as Config;
     Object.assign(cfg, envConfig);
   }
+
   const zoneFile = find(zoneConfigFile);
   if (zoneFile) {
-    const zoneConfig = yaml.load(fs.readFileSync(zoneFile, 'utf8'));
+    const zoneConfig = yaml.load(fs.readFileSync(zoneFile, 'utf8')) as Config;
     Object.assign(cfg, zoneConfig);
   }
+
   const file = find(configFile);
   if (file) {
-    const config = yaml.load(fs.readFileSync(file, 'utf8'));
+    const config = yaml.load(fs.readFileSync(file, 'utf8')) as Config;
     cfg = mergeJSON.merge(cfg, config);
   }
 

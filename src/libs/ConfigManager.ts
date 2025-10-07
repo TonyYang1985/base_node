@@ -1,6 +1,7 @@
 import { loadConfig } from '../utils/YamlUtil';
 
-export type ConfigMap = { [key: string]: unknown };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ConfigMap = { [key: string]: any };
 
 export class ConfigManager {
   private _config: ConfigMap = {};

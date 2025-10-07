@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Inject, Service } from 'typedi';
 import { onEvent } from '../../src';
 import { UserService } from './../services/UserService';
@@ -8,7 +9,7 @@ export class TestEventHandler {
   userService: UserService;
 
   @onEvent('test.example')
-  onTestEvent(param: unknown) {
+  onTestEvent(param: any) {
     console.log(param);
     throw 'oh-my-god';
   }

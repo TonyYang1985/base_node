@@ -1,8 +1,8 @@
 // created from 'create-ts-index'
 
+export * from './apisix';
 export * from './ApiGatewayLoader';
 export * from './ApiRegisterController';
-export * from './apisix';
 export * from './ApplicationConfig';
 export * from './BizError';
 export * from './CacheService';
@@ -14,7 +14,6 @@ export * from './DistributedEventsLoader';
 export * from './EventsManager';
 export * from './HealthCheckController';
 export * from './HttpMethods';
-export * from './i18nValidator';
 export * from './IdGenerator';
 export * from './KoaControllerReturnHandler';
 export * from './KoaLoader';
@@ -26,7 +25,8 @@ export * from './RedisLoader';
 export * from './ResRegTypes';
 export * from './Timer';
 export * from './TypeormLoader';
-export * from './types';
 export * from './UniversalController';
 export * from './UniversalService';
 export * from './ValidationHelper';
+export * from './i18nValidator';
+export * from './types';

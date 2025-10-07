@@ -46,7 +46,13 @@ export class DistributedEvents extends EventEmitter {
     await Promise.all(events.map((event) => this.channel.bindQueue(this.queueName, EVENTS_EXCHANGE, event)));
     this.channel.consume(this.queueName, (msg) => {
       if (msg) {
-        const eventName = msg.properties.headers['x-eventName'];
+        const eventName = msg.properties.headers?.['x-eventName']; // ✅ 添加可选链
+        if (!eventName) {
+          // ✅ 添加检查
+          this.logger.warn('Message missing x-eventName header');
+          this.channel.reject(msg, false);
+          return;
+        }
         const content = msg.content.toString();
         const data = JSON.parse(content);
         try {
@@ -61,7 +67,7 @@ export class DistributedEvents extends EventEmitter {
     });
   }
 
-  async pub<T = unknown>(event: string, data: T) {
+  async pub<T = any>(event: string, data: T) {
     this.channel.publish(EVENTS_EXCHANGE, event, Buffer.from(JSON.stringify(data)), {
       contentEncoding: 'UTF-8',
       contentType: 'text/json',

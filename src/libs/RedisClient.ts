@@ -1,18 +1,18 @@
-import IORedis from 'ioredis';
+import Redis from 'ioredis';
 import _ from 'lodash';
 import { Logger } from './Logger';
 
 export class RedisClient {
   logger = Logger.getLogger(RedisClient);
 
-  public readonly redis: IORedis.Redis;
+  public readonly redis: Redis;
 
   constructor(public readonly redisCfg: string | any) {
     this.redis = this.newClient();
   }
 
   newClient() {
-    return new IORedis(this.redisCfg);
+    return new Redis(this.redisCfg);
   }
 
   async saveCounter(counterName: string, counter: Record<string, number>, overwrite = false) {
@@ -56,7 +56,7 @@ export class RedisClient {
     if (typeof name === 'string') {
       return this.redis.hget(counterName, name);
     } else {
-      return this.redis.hmget(counterName, name);
+      return this.redis.hmget(counterName, ...name);
     }
   }
 }

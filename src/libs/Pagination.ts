@@ -1,5 +1,5 @@
 import { paginationCalculator } from 'pagination-calculator';
-import { SelectQueryBuilder } from 'typeorm';
+import { ObjectLiteral, SelectQueryBuilder } from 'typeorm'; // ✅ 添加 ObjectLiteral
 import { ct, cv } from '../deps/Libs';
 import { transArray } from '../utils/transformer';
 import { i18n } from './i18nValidator';
@@ -83,7 +83,8 @@ export class PaginationIn {
   sort: string;
 }
 
-export const setSorting = <T>(qb: SelectQueryBuilder<T>, alias: string, ...sorts: string[]) => {
+// ✅ 添加 extends ObjectLiteral
+export const setSorting = <T extends ObjectLiteral>(qb: SelectQueryBuilder<T>, alias: string, ...sorts: string[]) => {
   sorts.forEach((s) => {
     if (s) {
       if (s.startsWith('!')) {

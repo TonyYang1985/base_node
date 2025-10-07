@@ -5,7 +5,8 @@ import { ConfigManager } from './ConfigManager';
 import { Logger } from './Logger';
 import { RedisClient } from './RedisClient';
 
-export type RedisLoaderOption = unknown;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type RedisLoaderOption = any;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const redisLoader = (option: RedisLoaderOption) => (settings?: MicroframeworkSettings) => {

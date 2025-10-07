@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { ObjectLiteral } from 'typeorm'; // ✅ 添加导入
 import { BizError } from './BizError';
 import { ClassType } from './types';
 import { UniversalService } from './UniversalService';
@@ -27,7 +28,8 @@ export class UniversalController {
     return entityClass;
   }
 
-  getUniversalService<Entity = any, ID = string>(entityClass: ClassType<Entity>) {
+  getUniversalService<Entity extends ObjectLiteral = any, ID = string>(entityClass: ClassType<Entity>) {
+    // ✅ 添加约束
     let svc = this.services[entityClass.name];
     if (_.isNil(svc)) {
       svc = new UniversalService(entityClass);

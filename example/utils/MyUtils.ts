@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { SelectQueryBuilder } from 'typeorm';
+import { ObjectLiteral, SelectQueryBuilder } from 'typeorm';
 import { ct, cv, i18n, PaginationIn } from '../../src';
 
 @ct.Expose()
@@ -30,7 +30,8 @@ export class SearchVo extends PaginationIn {
   sort: string;
 }
 
-export function selectFields<T>(qb: SelectQueryBuilder<T>, fields: Record<string, string>) {
+// ✅ 正确：extends 在泛型声明 <T> 里
+export function selectFields<T extends ObjectLiteral>(qb: SelectQueryBuilder<T>, fields: Record<string, string>) {
   const arr: string[] = [];
   for (const key in fields) {
     arr.push(`${fields[key]} as '${key}'`);
@@ -41,7 +42,7 @@ export function selectFields<T>(qb: SelectQueryBuilder<T>, fields: Record<string
   return qb;
 }
 
-export function andWhereEqual<T>(qb: SelectQueryBuilder<T>, alias: string, field: string, value: string | number | Date) {
+export function andWhereEqual<T extends ObjectLiteral>(qb: SelectQueryBuilder<T>, alias: string, field: string, value: string | number | Date) {
   if (!_.isNil(value)) {
     const conditions: Record<string, string | number | Date> = {};
     conditions[field] = value;
@@ -50,7 +51,7 @@ export function andWhereEqual<T>(qb: SelectQueryBuilder<T>, alias: string, field
   return qb;
 }
 
-export function andWhereWithSign<T>(qb: SelectQueryBuilder<T>, alias: string, field: string, sign: string, value: string | number | Date) {
+export function andWhereWithSign<T extends ObjectLiteral>(qb: SelectQueryBuilder<T>, alias: string, field: string, sign: string, value: string | number | Date) {
   if (!_.isNil(value)) {
     const conditions: Record<string, string | number | Date> = {};
     conditions[field] = value;
@@ -59,7 +60,7 @@ export function andWhereWithSign<T>(qb: SelectQueryBuilder<T>, alias: string, fi
   return qb;
 }
 
-export function andWhereBetween<T>(qb: SelectQueryBuilder<T>, alias: string, field: string, value1: string | number | Date, value2: string | number | Date) {
+export function andWhereBetween<T extends ObjectLiteral>(qb: SelectQueryBuilder<T>, alias: string, field: string, value1: string | number | Date, value2: string | number | Date) {
   if (!_.isNil(value1) && !_.isNil(value2)) {
     const conditions: Record<string, string | number | Date> = {};
     conditions[`${field}1`] = value1;
@@ -69,7 +70,7 @@ export function andWhereBetween<T>(qb: SelectQueryBuilder<T>, alias: string, fie
   return qb;
 }
 
-export function multiSearch<T>(qb: SelectQueryBuilder<T>, fields: string[], keyWords: string) {
+export function multiSearch<T extends ObjectLiteral>(qb: SelectQueryBuilder<T>, fields: string[], keyWords: string) {
   if (!_.isNil(keyWords)) {
     let clauses: string[];
     let conditions: Record<string, string>;
@@ -90,7 +91,7 @@ export function multiSearch<T>(qb: SelectQueryBuilder<T>, fields: string[], keyW
   return qb;
 }
 
-export function setSorts<T>(qb: SelectQueryBuilder<T>, fields: Record<string, string>, sorts: string) {
+export function setSorts<T extends ObjectLiteral>(qb: SelectQueryBuilder<T>, fields: Record<string, string>, sorts: string) {
   if (sorts) {
     sorts.split(',').forEach((sort) => {
       if (sort) {
@@ -109,7 +110,7 @@ export function setSorts<T>(qb: SelectQueryBuilder<T>, fields: Record<string, st
   return qb;
 }
 
-export function andWhereIn<T>(qb: SelectQueryBuilder<T>, alias: string, field: string, values?: string[] | number[]) {
+export function andWhereIn<T extends ObjectLiteral>(qb: SelectQueryBuilder<T>, alias: string, field: string, values?: string[] | number[]) {
   if (!_.isNil(values) && !_.isEmpty(values)) {
     const conditions: Record<string, string[] | number[]> = {};
     conditions[field] = values;

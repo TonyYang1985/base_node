@@ -1,4 +1,4 @@
-import IORedis from 'ioredis';
+import Redis from 'ioredis';
 import _ from 'lodash';
 import Container, { Service } from 'typedi';
 import { Logger } from './Logger';
@@ -45,7 +45,7 @@ export class CacheService {
     this.startCacheService(redisClient.newClient(), redisClient.newClient());
   }
 
-  public startCacheService(redisSub: IORedis.Redis, redis: IORedis.Redis) {
+  public startCacheService(redisSub: Redis, redis: Redis) {
     redisSub.subscribe('CacheServiceEvent', (err) => {
       if (err) {
         this.logger.error(err.message);
@@ -159,7 +159,7 @@ export class CacheService {
     return this.L2(param, provider, expire)(param);
   }
 
-  async createCache<T = unknown>(key: any, cb: () => T | Promise<T>) {
+  async createCache<T = any>(key: any, cb: () => T | Promise<T>) {
     const cacheKey = JSON.stringify(key);
     const cacheData = await Promise.resolve(cb());
     if (!_.isNil(cacheData)) {
@@ -167,7 +167,7 @@ export class CacheService {
     }
   }
 
-  async updateCache<T = unknown>(key: any, cb: (currentVal?: T) => (T | undefined) | Promise<T | undefined>) {
+  async updateCache<T = any>(key: any, cb: (currentVal?: T) => (T | undefined) | Promise<T | undefined>) {
     const cacheKey = JSON.stringify(key);
     const redisCacheKey = getCacheServiceKey(cacheKey);
     const currentDataStr = await this.redisClient.redis.get(redisCacheKey);
@@ -184,7 +184,7 @@ export class CacheService {
     await this.redisClient.redis.del(redisCacheKey);
   }
 
-  async getCache<T = unknown>(key: any) {
+  async getCache<T = any>(key: any) {
     const cacheKey = JSON.stringify(key);
     const redisCacheKey = getCacheServiceKey(cacheKey);
     const currentDataStr = await this.redisClient.redis.get(redisCacheKey);
@@ -192,7 +192,7 @@ export class CacheService {
     return currentData;
   }
 
-  async getCaches<T = unknown>(keys: any[]) {
+  async getCaches<T = any>(keys: any[]) {
     const cacheKeys = keys.map((key) => JSON.stringify(key));
     const redisCacheKeys = cacheKeys.map((cacheKey) => getCacheServiceKey(cacheKey));
     const currentDataStrArray = await this.redisClient.redis.mget(redisCacheKeys);
@@ -201,12 +201,12 @@ export class CacheService {
   }
 }
 
-export const createCache = async <T = unknown>(key: any, cb: () => T | Promise<T>) => {
+export const createCache = async <T = any>(key: any, cb: () => T | Promise<T>) => {
   const cacheService = Container.get(CacheService);
   await cacheService.createCache(key, cb);
 };
 
-export const updateCache = async <T = unknown>(key: any, cb: (currentVal?: T) => (T | undefined) | Promise<T | undefined>) => {
+export const updateCache = async <T = any>(key: any, cb: (currentVal?: T) => (T | undefined) | Promise<T | undefined>) => {
   const cacheService = Container.get(CacheService);
   await cacheService.updateCache(key, cb);
 };
@@ -216,12 +216,12 @@ export const removeCache = async (key: any) => {
   await cacheService.removeCache(key);
 };
 
-export const getCache = async <T = unknown>(key: any) => {
+export const getCache = async <T = any>(key: any) => {
   const cacheService = Container.get(CacheService);
   return cacheService.getCache<T>(key);
 };
 
-export const getCaches = async <T = unknown>(keys: any[]) => {
+export const getCaches = async <T = any>(keys: any[]) => {
   const cacheService = Container.get(CacheService);
   return cacheService.getCaches<T>(keys);
 };

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import _ from 'lodash';
 import { MicroframeworkSettings } from 'microframework';
 import * as tpl from './apisix/ApisixTemplate';
@@ -6,7 +7,7 @@ import { ApplicationConfig } from './ApplicationConfig';
 import { ConfigManager } from './ConfigManager';
 import { Logger } from './Logger';
 
-export type ApiGatewayLoaderOption = unknown;
+export type ApiGatewayLoaderOption = any;
 
 const sleep = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));

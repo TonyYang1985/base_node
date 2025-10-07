@@ -6,7 +6,8 @@ export const TIME_EVENT = 'FmkTimer.TimeIsUp';
 type Handlers = Record<string, () => any>;
 
 export class FmkTimer extends EventEmitter {
-  timer: Record<number, [NodeJS.Timer, Handlers]> = {};
+  // ✅ 改为元组类型，不是数组
+  timer: Record<string, [NodeJS.Timeout, Handlers]> = {};
 
   private start(interval = 1) {
     const time = interval * 1000;
@@ -15,7 +16,7 @@ export class FmkTimer extends EventEmitter {
         setInterval(() => {
           this.emit(`${TIME_EVENT}#${interval}s`);
         }, time),
-        {},
+        {}, // ✅ 这是 Handlers 对象
       ];
     }
   }
@@ -23,7 +24,7 @@ export class FmkTimer extends EventEmitter {
   stop() {
     Object.values(this.timer)
       .map((v) => v[0])
-      .forEach(clearInterval);
+      .forEach((timeout) => clearInterval(timeout)); // ✅ 更清晰的写法
   }
 
   offTimer(name: string) {

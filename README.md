@@ -16,6 +16,9 @@ echo -n 'myuser:mypassword' | openssl base64
 npm_config__auth=xxxxxx yarn publish
 ----
 
+yarn publish --access  restricted
+
+----
 * Install yarn packages
 [source, shell]
 ----

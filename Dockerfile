@@ -14,7 +14,7 @@ FROM node:20-alpine
 WORKDIR /fot.sg/build
 ENV YARN_CACHE_FOLDER=/.yarn/cache
 #COPY --from=installer /.yarn/cache /.yarn/cache
-COPY --from=installer /fot.sg/build/node_modules /fot.sg/build/node_modules
+#COPY --from=installer /fot.sg/build/node_modules /fot.sg/build/node_modules
 
 ########################################################################   
 

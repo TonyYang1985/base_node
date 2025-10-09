@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Inject, Service } from 'typedi';
 import { InjectRepository } from 'typeorm-typedi-extensions';
-import { PaginationOut } from '../../src/libs/Pagination';
-import { RedisClient } from '../../src/libs/RedisClient';
+import { PaginationOut, RedisClient } from '../../src';
 import { RoleRepo, UserRepo } from '../repositories';
 import { RoleResultVo, RoleSearchVo } from '../vo/Roles';
 import { applyCache, createCache, getCache, L1Cache, L2Cache, removeCache, resetCache, updateCache } from './../../src';

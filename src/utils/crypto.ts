@@ -1,7 +1,6 @@
 import { createHash, createHmac } from 'crypto';
 import { readFileSync } from 'fs';
-import { ApplicationConfig } from '../libs/ApplicationConfig';
-import { ConfigManager } from '../libs/ConfigManager';
+import { ApplicationConfig, ConfigManager } from '../libs/configure';
 
 interface KeyCache {
   privateKey?: string;
@@ -15,6 +14,7 @@ class FotCrypto {
     const md5 = createHash('md5');
     return md5.update(input).digest('hex');
   }
+
   sha1Hmac(input: string): string {
     const hmac = createHmac('sha1', this.privateKey);
     hmac.update(input);
@@ -28,6 +28,7 @@ class FotCrypto {
     }
     return FotCrypto.keyCache.privateKey;
   }
+
   get publicKey(): string {
     const config = ConfigManager.getConfig<ApplicationConfig>('application');
     if (!FotCrypto.keyCache.publicKey) {

@@ -3,7 +3,7 @@ import { IsOptional, IsString, MaxLength } from 'class-validator';
 import { Body, CurrentUser, Param, QueryParam, QueryParams } from 'routing-controllers';
 import { ResponseSchema } from 'routing-controllers-openapi';
 import { Inject } from 'typedi';
-import { BizError, Delete, Get, i18n, JsonController, L1Cache, Logger, PaginationIn, Post, Put, Transform, UniversalController, ValidationHelper } from '../../src/index';
+import { BizError, Delete, Get, i18n, JsonController, L1Cache, Logger, PaginationIn, Post, Put, Transform, UniversalController, ValidationHelper } from '../../src';
 import { Role, User } from '../entities';
 import { UserService } from '../services/UserService';
 import { RoleSearchVo } from '../vo/Roles';

@@ -1,41 +1,24 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-import internalIp from 'internal-ip';
 import { bootstrapMicroframework, Microframework, MicroframeworkSettings } from 'microframework';
 import 'reflect-metadata';
-import { apiGatewayLoader } from '../libs/ApiGatewayLoader';
-import { ApplicationConfig } from '../libs/ApplicationConfig';
-import { ConfigManager } from '../libs/ConfigManager';
-import { distributedEventsLoader, DistributedEventsLoaderOption } from '../libs/DistributedEventsLoader';
-import { koaLoader, KoaLoaderOption } from '../libs/KoaLoader';
-import { Logger } from '../libs/Logger';
-import { redisLoader, RedisLoaderOption } from '../libs/RedisLoader';
-import { typeormLoader, TypeormLoaderOption } from '../libs/TypeormLoader';
+import { apiGatewayLoader } from '../libs/gateway';
+import { ApplicationConfig, ConfigManager } from '../libs/configure';
+import { rabbitmqLoader } from '../libs/rabbitmq';
+import { koaLoader } from '../libs/koa';
+import { Logger } from '../libs/logger';
+import { redisLoader } from '../libs/redis';
+import { typeormLoader } from '../libs/orm';
+import { BootstrapOption } from './BootstrapOption';
+import { getLocalIpAddress } from '../libs/network';
 
-export type BootstrapLoader = (settings?: MicroframeworkSettings) => Promise<any>;
-
-export type BootstrapOption = KoaLoaderOption &
-  TypeormLoaderOption &
-  RedisLoaderOption &
-  DistributedEventsLoaderOption & {
-    disableRedis?: boolean;
-    disableDatabase?: boolean;
-    disableEvent?: boolean;
-    loaders?: BootstrapLoader[];
-  };
-
-const settingHolder: {
-  setting?: MicroframeworkSettings;
-} = {};
-
-// eslint-disable-next-line @typescript-eslint/no-empty-function
 const emptyLoader = () => {};
+const settingHolder: { setting?: MicroframeworkSettings } = {};
 
 export const bootstrap = async (option: BootstrapOption): Promise<Microframework> => {
   const logger = Logger.getLogger('Bootstrap');
   const loaders = [
     option.disableDatabase ? emptyLoader : typeormLoader(option),
     option.disableRedis ? emptyLoader : redisLoader(option),
-    option.disableEvent ? emptyLoader : distributedEventsLoader(option),
+    option.disableEvent ? emptyLoader : rabbitmqLoader(option),
     koaLoader(option),
     apiGatewayLoader(option),
     (settings?: MicroframeworkSettings) => {
@@ -54,7 +37,8 @@ export const bootstrap = async (option: BootstrapOption): Promise<Microframework
     (mfmk as any).frameworkSettings = settingHolder.setting;
     const cfg = ConfigManager.getConfig<ApplicationConfig>('application');
     const applicationName = cfg.appName;
-    const host = ConfigManager.isProduction() ? applicationName : await internalIp.v4();
+    const networks = await getLocalIpAddress();
+    const host = ConfigManager.isProduction() ? applicationName : networks;
     ConfigManager.basePath = `http://${host}:${cfg.port}/api/v${cfg.version}/${applicationName}/`;
     logger.info(`🚀Server(${applicationName}/v${cfg.version}/${ConfigManager.getPkgVersion()}/${ConfigManager.getBuildNumber()}) is listening on ${ConfigManager.basePath}`);
     if (option.wsControllers) {

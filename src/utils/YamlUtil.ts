@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-var-requires */
 import fs from 'fs';
 import glob from 'glob-promise';
@@ -10,8 +9,8 @@ const configFiles: string[] = [];
 
 const find = (path: string): string | undefined => configFiles.find((f) => f === `${path}.yml`);
 
-export interface Config extends Record<string, any> {
-  [key: string]: any;
+export interface Config extends Record<string, unknown> {
+  [key: string]: unknown;
 }
 
 export const loadConfig = (name: string): Config => {

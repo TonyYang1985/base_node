@@ -47,7 +47,6 @@ export const upstreamTemplate = (appName: string, version: string, port: number)
         }
     }
 }`;
-
 export const serviceUriTemplate = (appName: string) => `/apisix/admin/services/${crypto.md5(`service_${appName}`)}`;
 export const serviceTemplate = (appName: string, enableApiGatewayAuth = false) => `{
 	"name": "${appName}",
@@ -65,7 +64,6 @@ export const serviceTemplate = (appName: string, enableApiGatewayAuth = false) =
 	"enable_websocket": true,
 	"upstream_id": "${crypto.md5(`upstream_${appName}`)}"
 }`;
-
 export const routeUriTemplate = (appName: string) => `/apisix/admin/routes/${crypto.md5(`route_${appName}`)}`;
 export const routeTemplate = (appName: string, domains: string[], apiVersion: string, build: string, version: string) => `{
     "name": "${appName}",

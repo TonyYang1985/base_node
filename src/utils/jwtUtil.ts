@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import jwt from 'jsonwebtoken';
 import _ from 'lodash';
 import { crypto } from './crypto';
 
 class JwtUtil {
-  issueToken(payload: Record<string, any>, options: jwt.SignOptions = { algorithm: 'RS256' }) {
+  issueToken(payload: Record<string, unknown>, options: jwt.SignOptions = { algorithm: 'RS256' }) {
     const privateKey = crypto.privateKey;
     return jwt.sign(payload, privateKey, options);
   }

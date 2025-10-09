@@ -1,5 +1,5 @@
 import { plainToClass } from 'class-transformer';
-import { ClassType } from '../libs/types';
+import { ClassType } from '../libs/type';
 
 export function trans<T>(claz: ClassType<T>, obj?: any, groups: string[] = []): T {
   // const inst = new claz();
@@ -31,7 +31,6 @@ export function Transform(claz: ClassType, ...groups: string[]): MethodDecorator
 export function TransformArray(claz: ClassType, ...groups: string[]): MethodDecorator {
   return function (target: Record<string, any>, propertyKey: string | symbol, descriptor: PropertyDescriptor): void {
     const originalMethod = descriptor.value;
-
     descriptor.value = function (...args: any[]): any[] {
       const result: any = originalMethod.apply(this, args);
       const isPromise = !!result && (typeof result === 'object' || typeof result === 'function') && typeof result.then === 'function';

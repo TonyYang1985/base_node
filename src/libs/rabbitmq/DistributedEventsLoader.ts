@@ -16,7 +16,7 @@ export const rabbitmqLoader = (option: DistributedEventsLoaderOption) => (settin
     Container.set(DistributedEvents, events);
     settings?.onShutdown(async () => events.close());
     return EventsManager.start(events, option.eventsHandlers).then(() => {
-      Logger.getLogger('RabbitmqLoader').info(`🔗RabbitMQ connected.`);
+      Logger.getLogger('RabbitmqLoader').info(`🔗RabbitMQ connected. rabbitmqCfg: ${rabbitmqCfg.connection}`);
     });
   });
 };

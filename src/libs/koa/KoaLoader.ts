@@ -72,80 +72,175 @@ export const koaLoader = (option: KoaLoaderOption) => (options?: MicroframeworkS
   );
 
   // setting up OpenAPI documentation
+  // const setupOpenAPI = () => {
+  //   const storage = getMetadataArgsStorage();
+  //   const schemas = validationMetadatasToSchemas({
+  //     refPointerPrefix: '#/components/schemas/',
+  //   });
+  //   schemas['Object'] = { type: 'string' };
+  //   schemas['Array'] = { type: 'array' };
+
+  //   const apiDoccfg = ConfigManager.getConfig<{ disabled: boolean }>('openapiCfg');
+  //   if (!apiDoccfg.disabled) {
+  //     const pkgVersion = ConfigManager.getPkgVersion();
+  //     // 1. 初始化并过滤自定义控制器
+  //     const filteredControllers = (option.restfulControllers || []).filter((c) => c);
+  //     // 2. 将 HealthCheckController 添加到列表中
+  //     // building Routing options for documentation generation
+  //     const routingOptions: RoutingControllersOptions = {
+  //       routePrefix: svcPath,
+  //       // 3. 将完整的控制器列表赋值给 options
+  //       controllers: filteredControllers,
+  //     };
+
+  //     // if (!Array.isArray(routingOptions.controllers)) {
+  //     //   //routingOptions.controllers = [];
+  //     // }
+  //     routingOptions.controllers?.push(HealthCheckController as any);
+  //     const spec = routingControllersToSpec(storage, routingOptions, {
+  //       info: {
+  //         title: cfg.appName,
+  //         description: `Open API 3 doc for module ${cfg.appName}`,
+  //         version: `v${cfg.version} / ${pkgVersion}`,
+  //       },
+  //       servers: [
+  //         {
+  //           url: `http://localhost:${cfg.port}`,
+  //           description: 'Local Development',
+  //         },
+  //         {
+  //           url: `http://${cfg.appName}:${cfg.port}`,
+  //           description: 'Dev Development (Must via Dev Proxy)',
+  //         },
+  //       ],
+  //       components: { schemas },
+  //     });
+
+  //     const names = new Set();
+  //     const expression = jsonata('$sort(*.*.*.tags)');
+  //     expression
+  //       .evaluate(spec)
+  //       .then((result) => {
+  //         if (Array.isArray(result)) {
+  //           result.forEach((tag: string) => names.add(tag));
+  //         }
+
+  //         const tags: Array<any> = [];
+  //         Array.from(names).forEach((name) => {
+  //           tags.push({
+  //             name,
+  //             description: `Generated from ${name} controller`,
+  //           });
+  //         });
+  //         spec.tags = tags;
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error processing API tags:', error);
+  //         spec.tags = [];
+  //       });
+
+  //     webapp.use(async (ctx, next) => {
+  //       if (ctx.request.url === `${svcPath}/api/openapi`) {
+  //         ctx.response.type = 'application/json; charset=utf-8';
+  //         ctx.body = JSON.stringify(spec, null, 2);
+  //       } else {
+  //         await next();
+  //       }
+  //     });
+  //   }
+  // };
+
   const setupOpenAPI = () => {
     const storage = getMetadataArgsStorage();
-    const schemas = validationMetadatasToSchemas({
+    const rawSchemas = validationMetadatasToSchemas({
       refPointerPrefix: '#/components/schemas/',
     });
-    schemas['Object'] = { type: 'string' };
-    schemas['Array'] = { type: 'array' };
+    // Filter out null/undefined schemas and add default schemas
+    const schemas: Record<string, any> = {};
+    Object.keys(rawSchemas).forEach((key) => {
+      if (rawSchemas[key] !== null && rawSchemas[key] !== undefined) {
+        schemas[key] = rawSchemas[key];
+      }
+    });
+    // Add default schemas for common types
+    schemas['Object'] = { type: 'object' };
+    schemas['Array'] = { type: 'array', items: {} };
+    schemas['String'] = { type: 'string' };
+    schemas['Number'] = { type: 'number' };
+    schemas['Boolean'] = { type: 'boolean' };
 
     const apiDoccfg = ConfigManager.getConfig<{ disabled: boolean }>('openapiCfg');
     if (!apiDoccfg.disabled) {
       const pkgVersion = ConfigManager.getPkgVersion();
-
+      // 1. åˆå§‹åŒ–å¹¶è¿‡æ»¤è‡ªå®šä¹‰æŽ§åˆ¶å™¨
+      const filteredControllers = (option.restfulControllers || []).filter((c) => c);
+      // 2. å°† HealthCheckController æ·»åŠ åˆ°åˆ—è¡¨ä¸­
       // building Routing options for documentation generation
       const routingOptions: RoutingControllersOptions = {
         routePrefix: svcPath,
-        controllers: option.restfulControllers || [],
+        // 3. å°†å®Œæ•´çš„æŽ§åˆ¶å™¨åˆ—è¡¨èµ‹å€¼ç»™ options
+        controllers: filteredControllers,
       };
 
-      if (!Array.isArray(routingOptions.controllers)) {
-        routingOptions.controllers = [];
-      }
-
-      routingOptions.controllers.push(HealthCheckController as any);
-
-      const spec = routingControllersToSpec(storage, routingOptions, {
-        info: {
-          title: cfg.appName,
-          description: `Open API 3 doc for module ${cfg.appName}`,
-          version: `v${cfg.version} / ${pkgVersion}`,
-        },
-        servers: [
-          {
-            url: `http://localhost:${cfg.port}`,
-            description: 'Local Development',
+      // if (!Array.isArray(routingOptions.controllers)) {
+      //   //routingOptions.controllers = [];
+      // }
+      routingOptions.controllers?.push(HealthCheckController as any);
+      try {
+        const spec = routingControllersToSpec(storage, routingOptions, {
+          info: {
+            title: cfg.appName,
+            description: `Open API 3 doc for module ${cfg.appName}`,
+            version: `v${cfg.version} / ${pkgVersion}`,
           },
-          {
-            url: `http://${cfg.appName}:${cfg.port}`,
-            description: 'Dev Development (Must via Dev Proxy)',
-          },
-        ],
-        components: { schemas },
-      });
-
-      const names = new Set();
-      const expression = jsonata('$sort(*.*.*.tags)');
-      expression
-        .evaluate(spec)
-        .then((result) => {
-          if (Array.isArray(result)) {
-            result.forEach((tag: string) => names.add(tag));
-          }
-
-          const tags: Array<any> = [];
-          Array.from(names).forEach((name) => {
-            tags.push({
-              name,
-              description: `Generated from ${name} controller`,
-            });
-          });
-          spec.tags = tags;
-        })
-        .catch((error) => {
-          console.error('Error processing API tags:', error);
-          spec.tags = [];
+          servers: [
+            {
+              url: `http://localhost:${cfg.port}`,
+              description: 'Local Development',
+            },
+            {
+              url: `http://${cfg.appName}:${cfg.port}`,
+              description: 'Dev Development (Must via Dev Proxy)',
+            },
+          ],
+          components: { schemas },
         });
 
-      webapp.use(async (ctx, next) => {
-        if (ctx.request.url === `${svcPath}/api/openapi`) {
-          ctx.response.type = 'application/json; charset=utf-8';
-          ctx.body = JSON.stringify(spec, null, 2);
-        } else {
-          await next();
-        }
-      });
+        const names = new Set();
+        const expression = jsonata('$sort(*.*.*.tags)');
+        expression
+          .evaluate(spec)
+          .then((result) => {
+            if (Array.isArray(result)) {
+              result.forEach((tag: string) => names.add(tag));
+            }
+
+            const tags: Array<any> = [];
+            Array.from(names).forEach((name) => {
+              tags.push({
+                name,
+                description: `Generated from ${name} controller`,
+              });
+            });
+            spec.tags = tags;
+          })
+          .catch((error) => {
+            console.error('Error processing API tags:', error);
+            spec.tags = [];
+          });
+
+        webapp.use(async (ctx, next) => {
+          if (ctx.request.url === `${svcPath}/api/openapi`) {
+            ctx.response.type = 'application/json; charset=utf-8';
+            ctx.body = JSON.stringify(spec, null, 2);
+          } else {
+            await next();
+          }
+        });
+      } catch (error) {
+        console.error('Error generating OpenAPI spec:', error);
+        console.error('This may be due to missing validation decorators on controller parameters');
+      }
     }
   };
 

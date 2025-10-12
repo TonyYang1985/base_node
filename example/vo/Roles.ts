@@ -86,6 +86,8 @@ export class RoleVo {
 
 @ct.Expose()
 export class RoleSearchVo extends PaginationIn {
+  @i18n(cv.IsString) // 添加这行
+  @cv.IsOptional() // 添加这行 - 因为查询参数通常是可选的
   @ct.Expose()
   app: string;
 }

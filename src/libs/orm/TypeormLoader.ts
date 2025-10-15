@@ -20,6 +20,8 @@ export type TypeormLoaderOption = {
 export const typeormLoader = (option: TypeormLoaderOption) => (settings?: MicroframeworkSettings) => {
   const entities = option.entities || [];
   const cfg = ConfigManager.getConfig<DatabaseConfig>('database');
+  const logger = Logger.getLogger('TypeormLoader');
+  logger.info(`Repository for entity "${cfg.mariaDBUrl}" registered in container`);
   const dbUrl = new URL(cfg.mariaDBUrl);
   // dataSource
   const dataSource = new DataSource({

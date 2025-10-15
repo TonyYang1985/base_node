@@ -1,0 +1,104 @@
+{
+  "components": {
+    "schemas": {
+      "PaginationIn": { "properties": { "pageIndex": { "type": "number" }, "recordIndex": { "type": "number" }, "pageSize": { "type": "number" }, "search": { "type": "string" }, "sort": { "type": "string" } }, "type": "object", "required": [] },
+      "SearchVo": { "properties": { "pageIndex": { "type": "number" }, "recordIndex": { "type": "number" }, "pageSize": { "type": "number" }, "search": { "type": "string" }, "sort": { "type": "string" } }, "type": "object", "required": [] },
+      "AssignRolesToUser": { "properties": { "app": { "minLength": 1, "maxLength": 128, "type": "string" }, "roleIds": { "items": { "minLength": 1, "maxLength": 10, "type": "string" }, "type": "array" } }, "type": "object", "required": ["app", "roleIds"] },
+      "AssignFunctionsToRole": { "properties": { "app": { "minLength": 1, "maxLength": 128, "type": "string" }, "functions": { "items": { "minLength": 1, "maxLength": 128, "type": "string" }, "type": "array" } }, "type": "object", "required": ["app", "functions"] },
+      "AssignMenusToRole": { "properties": { "app": { "minLength": 1, "maxLength": 128, "type": "string" }, "funcs": { "items": { "minLength": 1, "maxLength": 128, "type": "string" }, "type": "array" } }, "type": "object", "required": ["app", "funcs"] },
+      "AssignUsersToRole": { "properties": { "app": { "minLength": 1, "maxLength": 128, "type": "string" }, "userIds": { "items": { "minLength": 1, "maxLength": 128, "type": "string" }, "type": "array" } }, "type": "object", "required": ["app", "userIds"] },
+      "RoleVo": { "properties": { "name": { "minLength": 1, "maxLength": 32, "type": "string" }, "app": { "minLength": 1, "maxLength": 32, "type": "string" }, "isDefault": { "type": "number", "enum": [0, 1] } }, "type": "object", "required": ["name", "app"] },
+      "RoleSearchVo": { "properties": { "app": { "type": "string" }, "pageIndex": { "type": "number" }, "recordIndex": { "type": "number" }, "pageSize": { "type": "number" }, "search": { "type": "string" }, "sort": { "type": "string" } }, "type": "object", "required": [] },
+      "Who": { "properties": { "name": { "maxLength": 3, "type": "string" }, "name1": { "maxLength": 1, "type": "string" } }, "type": "object", "required": ["name1"] },
+      "WhoResponse": { "properties": { "hi": { "type": "string" } }, "type": "object", "required": ["hi"] },
+      "Object": { "type": "object" },
+      "Array": { "type": "array", "items": {} },
+      "String": { "type": "string" },
+      "Number": { "type": "number" },
+      "Boolean": { "type": "boolean" },
+      "Date": { "type": "string", "format": "date-time" },
+      "UserSearch": { "type": "object", "properties": { "app": { "type": "string" }, "userName": { "type": "string" }, "pageIndex": { "type": "number" }, "recordIndex": { "type": "number" }, "pageSize": { "type": "number" }, "search": { "type": "string" }, "sort": { "type": "string" } }, "required": [] }
+    }
+  },
+  "info": { "title": "example", "version": "v1 / 1.0.11", "description": "Open API 3 doc for module example" },
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/v1/example/_healthcheck": { "get": { "operationId": "HealthCheckController.healthCheck", "parameters": [{ "in": "query", "name": "os", "required": false, "schema": { "type": "boolean" } }], "responses": { "200": { "content": { "application/json": {} }, "description": "Successful response" } }, "summary": "Health check", "tags": ["Health Check"] } },
+    "/api/v1/example/api/list": { "get": { "operationId": "ApiRegisterController.showAllApisOfThisModule", "responses": { "200": { "content": { "application/json": {} }, "description": "Successful response" } }, "summary": "Show all apis of this module", "tags": ["Api Register"] } },
+    "/api/v1/example/": { "get": { "operationId": "ApiRegisterController.index", "responses": { "200": { "content": { "text/html": {} }, "description": "Successful response" } }, "summary": "Index", "tags": ["Api Register"] } },
+    "/api/v1/example/api/web/CommonApiParam.yaml": { "get": { "operationId": "ApiRegisterController.restClientConfigWebCommonApiParamWeb", "responses": { "200": { "content": { "application/json": {} }, "description": "Successful response" } }, "summary": "Rest client config web common api param web", "tags": ["Api Register"] } },
+    "/api/v1/example/api/web/API.yaml": { "get": { "operationId": "ApiRegisterController.restClientConfigWeb", "responses": { "200": { "content": { "application/json": {} }, "description": "Successful response" } }, "summary": "Rest client config web", "tags": ["Api Register"] } },
+    "/api/v1/example/api/web/API.json": { "get": { "operationId": "ApiRegisterController.restClientWebApis", "responses": { "200": { "content": { "application/json": {} }, "description": "Successful response" } }, "summary": "Rest client web apis", "tags": ["Api Register"] } },
+    "/api/v1/example/api/svc/CommonApiParam.yaml": { "get": { "operationId": "ApiRegisterController.restClientConfigWebCommonApiParamSvc", "responses": { "200": { "content": { "application/json": {} }, "description": "Successful response" } }, "summary": "Rest client config web common api param svc", "tags": ["Api Register"] } },
+    "/api/v1/example/api/svc/API.yaml": { "get": { "operationId": "ApiRegisterController.restClientConfigService", "responses": { "200": { "content": { "application/json": {} }, "description": "Successful response" } }, "summary": "Rest client config service", "tags": ["Api Register"] } },
+    "/api/v1/example/api/svc/API.json": { "get": { "operationId": "ApiRegisterController.restClientSvcApi", "responses": { "200": { "content": { "application/json": {} }, "description": "Successful response" } }, "summary": "Rest client svc api", "tags": ["Api Register"] } },
+    "/api/v1/example/crud/user": {
+      "post": { "operationId": "UserController.createUser", "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UserVo" } } }, "description": "UserVo", "required": false }, "responses": { "200": { "content": { "application/json": {} }, "description": "Successful response" } }, "summary": "Create user", "tags": ["User"] },
+      "get": {
+        "operationId": "UserController.queryUser",
+        "parameters": [
+          { "in": "query", "name": "app", "required": false, "schema": { "type": "string" } },
+          { "in": "query", "name": "userName", "required": false, "schema": { "type": "string" } },
+          { "in": "query", "name": "pageIndex", "required": false, "schema": { "type": "number" } },
+          { "in": "query", "name": "recordIndex", "required": false, "schema": { "type": "number" } },
+          { "in": "query", "name": "pageSize", "required": false, "schema": { "type": "number" } },
+          { "in": "query", "name": "search", "required": false, "schema": { "type": "string" } },
+          { "in": "query", "name": "sort", "required": false, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "content": { "application/json": {} }, "description": "Successful response" } },
+        "summary": "Query user",
+        "tags": ["User"]
+      }
+    },
+    "/api/v1/example/crud/user/{id}": {
+      "get": { "operationId": "UserController.getUser", "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "pattern": "[^\\/#\\?]+?", "type": "string" } }], "responses": { "200": { "content": { "application/json": {} }, "description": "Successful response" } }, "summary": "Get user", "tags": ["User"] },
+      "put": { "operationId": "UserController.modifyUser", "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "pattern": "[^\\/#\\?]+?", "type": "string" } }], "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UserVo" } } }, "description": "UserVo", "required": false }, "responses": { "200": { "content": { "application/json": {} }, "description": "Successful response" } }, "summary": "Modify user", "tags": ["User"] },
+      "delete": { "operationId": "UserController.removeUser", "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "pattern": "[^\\/#\\?]+?", "type": "string" } }], "responses": { "200": { "content": { "application/json": {} }, "description": "Successful response" } }, "summary": "Remove user", "tags": ["User"] }
+    },
+    "/api/v1/example/crud/allUsers": { "get": { "operationId": "UserController.getAllUsers", "responses": { "200": { "content": { "application/json": {} }, "description": "Successful response" } }, "summary": "Get all users", "tags": ["User"] } },
+    "/api/v1/example/all": {
+      "get": {
+        "operationId": "UserController.allUsers",
+        "parameters": [
+          { "in": "query", "name": "email", "required": false, "schema": { "type": "string" } },
+          { "in": "query", "name": "reset", "required": false, "schema": { "type": "string" } },
+          { "in": "query", "name": "cache", "required": false, "schema": { "type": "string" } },
+          { "in": "query", "name": "update", "required": false, "schema": { "type": "string" } },
+          { "in": "query", "name": "del", "required": false, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "content": { "application/json": {} }, "description": "Successful response" } },
+        "summary": "All users",
+        "tags": ["User"]
+      }
+    },
+    "/api/v1/example/actions/who": { "get": { "operationId": "UserController.whoami1", "responses": { "200": { "content": { "application/json": {} }, "description": "Successful response" } }, "summary": "Whoami 1", "tags": ["User"] } },
+    "/api/v1/example/hello/{who}": { "get": { "operationId": "UserController.whoami2", "parameters": [{ "in": "path", "name": "who", "required": true, "schema": { "pattern": "[^\\/#\\?]+?", "type": "string" } }], "responses": { "200": { "content": { "application/json": {} }, "description": "Successful response" } }, "summary": "Whoami 2", "tags": ["User"] } },
+    "/api/v1/example/hello": { "post": { "operationId": "UserController.whoami3", "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Who" } } }, "description": "Who", "required": false }, "responses": { "200": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WhoResponse" } } }, "description": "" } }, "summary": "Whoami 3", "tags": ["User"] } },
+    "/api/v1/example/query/roles": {
+      "get": {
+        "operationId": "UserController.queryRoles",
+        "parameters": [
+          { "in": "query", "name": "app", "required": false, "schema": { "type": "string" } },
+          { "in": "query", "name": "pageIndex", "required": false, "schema": { "type": "number" } },
+          { "in": "query", "name": "recordIndex", "required": false, "schema": { "type": "number" } },
+          { "in": "query", "name": "pageSize", "required": false, "schema": { "type": "number" } },
+          { "in": "query", "name": "search", "required": false, "schema": { "type": "string" } },
+          { "in": "query", "name": "sort", "required": false, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WhoResponse" } } }, "description": "" } },
+        "summary": "Query roles",
+        "tags": ["User"]
+      }
+    },
+    "/api/v1/example/error": { "post": { "operationId": "UserController.thisApiWillThrowAnError", "responses": { "200": { "content": { "application/json": {} }, "description": "Successful response" } }, "summary": "This api will throw an error", "tags": ["User"] } }
+  },
+  "servers": [
+    { "url": "http://localhost:3000", "description": "Local Development" },
+    { "url": "http://example:3000", "description": "Dev Development (Must via Dev Proxy)" }
+  ],
+  "tags": [
+    { "name": "Api Register", "description": "Generated from Api Register controller" },
+    { "name": "Health Check", "description": "Generated from Health Check controller" },
+    { "name": "User", "description": "Generated from User controller" }
+  ]
+}

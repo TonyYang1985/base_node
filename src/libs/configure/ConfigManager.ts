@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+ 
 import { loadConfig } from '../../utils/YamlUtil';
 
 export type ConfigMap = { [key: string]: unknown };
@@ -51,14 +51,12 @@ export class ConfigManager {
 
   static getPkgVersion() {
     const appDir = process.cwd();
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const pkgVersion = require(`${appDir}/package.json`).version;
     return pkgVersion;
   }
 
   static getBuildNumber() {
     const appDir = process.cwd();
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const buildNumber = require(`${appDir}/package.json`).buildNumber;
     return buildNumber;
   }

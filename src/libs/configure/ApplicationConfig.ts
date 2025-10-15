@@ -8,6 +8,9 @@ export interface ApplicationConfig {
 
 export interface DatabaseConfig {
   mariaDBUrl: string;
-  redis: string | any;
   output: string;
+}
+
+export interface RedisConfig {
+  redis: string | any;
 }

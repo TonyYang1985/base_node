@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Inject, Service } from 'typedi';
 import { onEvent } from '../../src';
 import { UserService } from './../services/UserService';

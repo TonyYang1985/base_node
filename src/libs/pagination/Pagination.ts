@@ -5,7 +5,7 @@ import { transArray } from '../../utils/transformer';
 import { i18n } from '../validator';
 import { ClassType } from '../type';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+ 
 const snake = require('to-snake-case');
 
 export const getCalculator = (totalRecords: number, pageIndex: number, pageSize: number) =>

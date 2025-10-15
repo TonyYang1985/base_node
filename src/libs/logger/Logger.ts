@@ -1,15 +1,13 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // logger.ts (Example file name)
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import pino from 'pino';
 import { ConfigManager } from '../configure';
 
 // 接口定义保持不变
 export interface LoggerConfig {
-  level: pino.Level;
+  level?: pino.Level;  // ✅ 改为可选
   transport?: {
     target: string;
     options?: Record<string, any>;
@@ -28,9 +26,10 @@ export class Logger {
     // 1. 加载和转换配置
     const loggerCfg = ConfigManager.getConfig<LoggerConfig>('logger');
     const transformedConfig = Logger.transformConfig(loggerCfg);
+    
     const options: Record<string, any> = {
       name: tag,
-      level: transformedConfig.level,
+      level: transformedConfig.level || 'info',  // ✅ 添加默认值 'info'
     };
 
     // --- 针对 ncc/捆绑 的修复：强制使用同步流 ---
@@ -70,6 +69,11 @@ export class Logger {
   // transformConfig 方法保持不变，它负责将 prettyPrint 转换为 transport 格式
   private static transformConfig(config: LoggerConfig): LoggerConfig {
     const newConfig = { ...config };
+
+    // ✅ 添加：如果没有 level，设置默认值
+    if (!newConfig.level) {
+      newConfig.level = 'info';
+    }
 
     if (newConfig.transport) {
       return newConfig;

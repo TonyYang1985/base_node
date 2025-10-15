@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+ 
 import { camelCase, startCase } from 'lodash';
 import { URL } from 'url';
 import tables from '../gen_db.json';
-import { ConfigManager, DatabaseConfig } from '../src';
+import { ConfigManager, DatabaseConfig } from '../src/libs/configure';
 
 const Entities = tables.map((n) => startCase(camelCase(n)).replace(/ /g, ''));
 

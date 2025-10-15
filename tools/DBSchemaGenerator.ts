@@ -1,14 +1,19 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+ 
 import { camelCase, startCase } from 'lodash';
 import { URL } from 'url';
 import tables from '../gen_db.json';
-import { ConfigManager, DatabaseConfig } from '../src';
+import { ConfigManager, DatabaseConfig } from '../src/libs/configure';
 
+//Entities
 const Entities = tables.map((n) => startCase(camelCase(n)).replace(/ /g, ''));
-
+//getConfig
 const cfg = ConfigManager.getConfig<DatabaseConfig>('database');
+if (!cfg.mariaDBUrl) {
+  throw new Error('mariaDBUrl is not defined in database config');
+}
+//URL
 const db = new URL(cfg.mariaDBUrl);
-
+//argv
 const argv = process.argv;
 const { hostname, pathname, port, username, password } = db;
 const configs: string[] = ['-h', hostname, '-d', pathname.substr(1), '-p', port, '-u', username, '-x', password, '-e', 'mariadb', '-o', `${cfg.output || './src'}/entities`, '--noConfig', '--cf', 'pascal', '--ce', 'pascal', '--cp', 'camel', '--relationIds', '--generateConstructor'];

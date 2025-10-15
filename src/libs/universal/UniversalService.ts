@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import _ from 'lodash';
 import { FindOptionsWhere, FindManyOptions, getConnection, getRepository, Repository, SelectQueryBuilder, In, ObjectLiteral } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';

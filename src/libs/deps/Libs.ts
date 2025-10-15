@@ -7,7 +7,7 @@ export * as orm from 'typeorm';
 export * as tx from 'typeorm-transactional-cls-hooked';
 export * as repo from 'typeorm-typedi-extensions';
 import ctl from 'routing-controllers';
-//eslint-disable-next-line @typescript-eslint/no-require-imports
+ 
 export const rest = { ...require('routing-controllers') } as typeof ctl;
 
 const _body = rest.Body;

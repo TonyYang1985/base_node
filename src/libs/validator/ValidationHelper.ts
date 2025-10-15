@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { validate, ValidationError, ValidatorOptions } from 'class-validator';
 import { BadRequestError } from 'routing-controllers';
 

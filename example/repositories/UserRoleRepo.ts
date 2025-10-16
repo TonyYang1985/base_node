@@ -1,10 +1,13 @@
 // {}
-import { Service } from 'typedi';
-import { EntityRepository, Repository } from 'typeorm';
-import { UserRole } from '../entities';
+import { Service, Inject } from "typedi";
+import { DataSource, Repository } from "typeorm";
+import { UserRole } from "../entities";
 
 @Service()
-@EntityRepository(UserRole)
 export class UserRoleRepo extends Repository<UserRole> {
-  // Add your code herer
+  constructor(@Inject("dataSource") dataSource: DataSource) {
+    super(UserRole, dataSource.createEntityManager());
+  }
+
+  // Add your code here
 }

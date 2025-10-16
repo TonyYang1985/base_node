@@ -1,11 +1,13 @@
-// { }
-import { Service } from 'typedi';
+// {}
+import { Service, Inject } from 'typedi';
+import { DataSource, Repository } from 'typeorm';
 import { {{toEntityName tscName}} } from '../entities';
-import { EntityRepository, Repository } from 'typeorm';
-
 
 @Service()
-@EntityRepository({{toEntityName tscName}})
 export class {{toEntityName tscName}}Repo extends Repository<{{toEntityName tscName}}> {
-     // Add your code herer
+  constructor(@Inject('dataSource') dataSource: DataSource) {
+    super({{toEntityName tscName}}, dataSource.createEntityManager());
+  }
+  
+  // Add your code here
 }
